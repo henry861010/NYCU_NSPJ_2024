@@ -1,0 +1,19 @@
+# Last Modified: Wed Apr 10 19:47:24 2024
+abi <abi/3.0>,
+
+#include <tunables/global>
+
+/usr/sbin/nginx {
+  #include <abstractions/apache2-common>
+  #include <abstractions/base>
+  #include <abstractions/nis>
+
+  capability dac_override,
+  capability dac_read_search,
+  capability net_bind_service,
+  capability setgid,
+  capability setuid,
+
+  deny /var/www/html/unsafe/* r,
+  /** rw,
+}
