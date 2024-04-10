@@ -1,7 +1,6 @@
 version: '3.1'
 
 services:
-
   wordpress:
     image: wordpress
     restart: always
@@ -18,8 +17,8 @@ services:
     volumes:
       - wordpress:/var/www/html
     # TODO: attach the apparmor profile into this section
-    # security_opt:
-    #   - 
+    security_opt:
+      - apparmor:311551136
 
   db:
     image: mysql:8.0

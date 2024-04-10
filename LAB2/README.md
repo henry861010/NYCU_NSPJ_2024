@@ -42,7 +42,7 @@
 					deny /var/www/html/unsafe/* r,
 					/** rw,
 				}
-			```
+			  ```
 			1. the apparmor deny all the files and services access in default, and there are a lot of access requirement from nginx server. fro convenience, I allow all the files and service to be accessed except to /var/www/html/unsafe/index.html
 			2. this profile file is modified from https://www.digitalocean.com/community/tutorials/how-to-create-an-apparmor-profile-for-nginx-on-ubuntu-14-04, but it not enough for my nginx
 		4. reload the profile to kernel: ```sudo apparmor_parser -r /etc/apparmor.d/usr.sbin.nginx```
@@ -66,9 +66,22 @@
 * stop nuginx server:```sudo systemctl stop nginx```
 
 ## task 2
-1. ```sudo apt-get update && apt-get install docker-compose```
-2. ```docker build -t nspj:latest . ```
-3. ```docker-compose up```
+1. build
+	1. ```sudo apt-get update```
+	2. ```sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin```
+	3. ```sudo systemctl start docker```
+	4. ```sudo docker build -t nspj:latest . ```
+2. add the apparmor profile
+	1. the policy is saved under the lab2/task2/policy/ ans named 311551136. copy the policy to apparmor's directory ```sudo cp ./311551136 /etc/apparmor.d/```
+	2. the content of the policy
+		1. aaa
+		2. error: ```AppArmor parser error for /etc/apparmor.d/311551136 in profile /etc/apparmor.d/311551136 at line 5: Could not open 'abstractions/lxc/container-base'```
+			* RUN: ```sudo apt-get install lxc apparmor-utils```
+	2. load the policy to kernel ```sudo apparmor_parser -r -v /etc/apparmor.d/311551136```
+	
+3. run the docker and server
+	1. begin the server in docker compose: ```sudo docker compose up -d```(```sudo docker-compose up``` not work!!!)
+	2. stop the docker compose ```sudo docker-compose stop```
 
 
 
